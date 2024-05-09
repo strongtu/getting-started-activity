@@ -1,4 +1,4 @@
-<!doctype html>
+<!--doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -10,4 +10,183 @@
     <div id="app"></div>
     <script type="module" src="/main.js"></script>
   </body>
+</html-->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+
+  <title>
+    Porker24
+  </title>
+
+  <!--http://www.html5rocks.com/en/mobile/mobifying/-->
+  <meta name="viewport"
+    content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1,minimal-ui=true" />
+
+  <!--https://developer.apple.com/library/safari/documentation/AppleApplications/Reference/SafariHTMLRef/Articles/MetaTags.html-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="format-detection" content="telephone=no">
+
+  <!-- force webkit on 360 -->
+  <meta name="renderer" content="webkit" />
+  <meta name="force-rendering" content="webkit" />
+  <!-- force edge on IE -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="msapplication-tap-highlight" content="no">
+
+  <!-- force full screen on some browser -->
+  <meta name="full-screen" content="yes" />
+  <meta name="x5-fullscreen" content="true" />
+  <meta name="360-fullscreen" content="true" />
+
+  <!--fix fireball/issues/3568 -->
+  <!--<meta name="browsermode" content="application">-->
+  <meta name="x5-page-mode" content="app">
+
+  <!--<link rel="apple-touch-icon" href=".png" />-->
+  <!--<link rel="apple-touch-icon-precomposed" href=".png" />-->
+
+  <link rel="stylesheet" type="text/css" href="style.css" />
+  <style type="text/css">
+    .loading-bkg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      z-index: 10;
+      align-items: center;
+      justify-content: center;
+      background-color: #212223;
+    }
+
+    .loading-div {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none; /* 添加这一行 */
+    }
+
+    .loading-img {
+      align-items: center;
+      justify-content: center;
+      background-size: 100%;
+      background-repeat: no-repeat;
+      width: 64%;
+      height: auto;
+      position: relative;
+      top: calc(-15%);
+    }
+
+    @media(orientation: landscape) {
+      .loading-img {
+        width: auto;
+        height: 64%;
+      }
+    }
+
+    .webgl-support-message-div {
+      position: absolute;
+      margin-top: 100px;
+      display: none;
+      width: 100%;
+      z-index: 11;
+    }
+
+    .webgl-support-message {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background-color: red;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      z-index: 11;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="loading-bkg" class="loading-bkg"></div>
+  <div id="GameDiv" cc_exact_fit_screen="true">
+    <div id="Cocos3dGameContainer">
+      <canvas id="GameCanvas" oncontextmenu="event.preventDefault()" tabindex="99"></canvas>
+    </div>
+  </div>
+  <div id="loading-div" class="loading-div">
+    <canvas id="TestGL" tabindex="-1" style="display: none"></canvas>
+    <img class="loading-img" id="loading-img" src="http://sogetsu.online/images/Poker24.out.jpg" />
+  </div>
+  <div class="webgl-support-message-div" id="webgl-support-message-div">
+    <div class="webgl-support-message">
+      Your browser does not support this game. Please check your device's WebGL compatibility.
+    </div>
+  </div>
+  <div id="discord_info" class="loading-div"></div>
+  <!-- try to import discord -->
+  <script>
+    console.log("current domain")
+    console.log(window.location.hostname)
+    if (window.location.hostname.endsWith('discordsays.com')) {
+      var script = document.createElement('script');
+      script.type = 'module';
+      script.src = './main.js';
+      document.body.appendChild(script);
+    }
+  </script>
+
+  <!-- Polyfills bundle. -->
+
+  <script src="src/polyfills.bundle.js" charset="utf-8"> </script>
+
+  <!-- SystemJS support. -->
+  <script src="src/system.bundle.js" charset="utf-8"> </script>
+
+  <!-- Import map -->
+  <script src="src/import-map.json" type="systemjs-importmap" charset="utf-8"> </script>
+
+  <script>
+    System.import('./index.js').catch(function (err) { console.error(err); })
+  </script>
+
+</body>
+
 </html>
+
+<script>
+  window.hideLoading = function () {
+    let element = document.getElementById('loading-div');
+    if (element) {
+      element.style.display = 'none';
+    }
+    const webglCheck = document.getElementById('webgl-support-message-div');
+    if (webglCheck) {
+      webglCheck.style.display = 'none';
+    }
+  };
+
+  window.hideLoadingBkg = function () {
+    let bkg = document.getElementById('loading-bkg');
+    if (bkg) {
+      bkg.style.display = 'none';
+    }
+  }
+
+  function checkWebGL() {
+    const canvas = document.getElementById('TestGL');
+    const gl = canvas.getContext('webgl') || canvas.getContext('webgl2');
+    if (!gl) {
+      const webglCheck = document.getElementById('webgl-support-message-div');
+      webglCheck.style.display = 'block';
+      console.error("Your browser does not support this game. Please check your device's WebGL compatibility.");
+    }
+    canvas.remove();
+  }
+  checkWebGL();
+</script>

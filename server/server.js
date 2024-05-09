@@ -11,6 +11,7 @@ app.use(express.json());
 
 app.post("/api/token", async (req, res) => {
   console.log("Received a POST request to /api/token");
+  console.log("Request body:", req.body.code);
   
   // Exchange the code for an access_token
   const response = await fetch(`https://discord.com/api/oauth2/token`, {

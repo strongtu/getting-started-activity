@@ -1,8 +1,5 @@
 import { DiscordSDK } from "@discord/embedded-app-sdk";
 
-import rocketLogo from '/rocket.png';
-import "./style.css";
-
 // Will eventually store the authenticated user's access_token
 let auth;
 
@@ -55,15 +52,14 @@ async function setupDiscordSdk() {
   }
 }
 
-document.querySelector('#app').innerHTML = `
+document.querySelector('#discord_info').innerHTML = `
   <div>
-    <img src="${rocketLogo}" class="logo" alt="Discord" />
-    <h1>Hello, World!</h1>
+    <h1>Hello, Discord!</h1>
   </div>
 `;
 
 async function appendVoiceChannelName() {
-  const app = document.querySelector('#app');
+  const app = document.querySelector('#discord_info');
 
   let activityChannelName = 'Unknown';
 
@@ -85,7 +81,7 @@ async function appendVoiceChannelName() {
 }
 
 async function appendGuildAvatar() {
-  const app = document.querySelector('#app');
+  const app = document.querySelector('#discord_info');
 
   // 1. From the HTTP API fetch a list of all of the user's guilds
   const guilds = await fetch(`https://discord.com/api/v10/users/@me/guilds`, {
